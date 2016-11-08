@@ -62,12 +62,7 @@ func parse(input []byte) ([]byte, error) {
 	}
 
 	context := environToContext()
-	out, err := tpl.ExecuteBytes(context)
-	if err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	return tpl.ExecuteBytes(context)
 }
 
 func readInput(input string) ([]byte, error) {
