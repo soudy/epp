@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
+
+	"github.com/flosch/pongo2"
 )
 
 func init() {
@@ -47,5 +49,19 @@ I should!
 
 	if string(res) != expected {
 		t.Errorf("bad expansion: expected '%s', got '%s'", expected, res)
+	}
+}
+
+func TestFilterBase64Encode(t *testing.T) {
+	actualResult, err := filterBase64Encode(pongo2.AsValue("Hello"), pongo2.AsValue(""))
+
+	if err != nil {
+		t.Errorf("unexpected error '%s'", err)
+	}
+
+	expectedResult := "SGVsbG8="
+
+	if actualResult.String() != expectedResult {
+		t.Errorf("Expected %s but got %s", expectedResult, actualResult)
 	}
 }
