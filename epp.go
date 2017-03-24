@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -30,6 +31,8 @@ func main() {
 		fmt.Fprintln(os.Stderr, "error: an input file is required")
 		os.Exit(1)
 	}
+
+	pongo2.RegisterFilter("b64enc", filterBase64Encode)
 
 	fileContents, err := readInput(flag.Arg(0))
 	if err != nil {
@@ -84,4 +87,8 @@ func environToContext() pongo2.Context {
 	}
 
 	return ctx
+}
+
+func filterBase64Encode(in *pongo2.Value, param *pongo2.Value) (*pongo2.Value, *pongo2.Error) {
+	return pongo2.AsValue(base64.StdEncoding.EncodeToString([]byte(in.String()))), nil
 }
