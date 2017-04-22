@@ -18,7 +18,7 @@ func TestEnvVariables(t *testing.T) {
 	tpl := []byte("{{ SPLIT_TEST }}: {{ KUBERNETES_ADDRESS }}")
 	expected := fmt.Sprintf("%s: %s", os.Getenv("SPLIT_TEST"), os.Getenv("KUBERNETES_ADDRESS"))
 
-	res, err := parse(tpl)
+	res, err := Parse(tpl)
 
 	if err != nil {
 		t.Errorf("unexpected error '%s'", err)
@@ -41,7 +41,7 @@ I should!
 I should!
 `
 
-	res, err := parse(tpl)
+	res, err := Parse(tpl)
 
 	if err != nil {
 		t.Errorf("unexpected error '%s'", err)
