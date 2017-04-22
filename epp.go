@@ -12,19 +12,12 @@ import (
 )
 
 var (
-	// Version of the application
-	Version string
-
-	// GitCommit of the application
+	Version   string
 	GitCommit string
 
 	output  = flag.String("o", "", "output file")
 	version = flag.Bool("version", false, "print epp version")
 )
-
-func init() {
-	pongo2.RegisterFilter("b64enc", filterBase64Encode)
-}
 
 func main() {
 	flag.Parse()
@@ -39,13 +32,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	pongo2.RegisterFilter("b64enc", filterBase64Encode)
+
 	fileContents, err := readInput(flag.Arg(0))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "IO error: %s\n", err)
 		os.Exit(1)
 	}
 
-	out, err := Parse(fileContents)
+	out, err := parse(fileContents)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "templating error: %s\n", err)
 		os.Exit(1)
@@ -63,8 +58,7 @@ func main() {
 	}
 }
 
-// Parse parses the input and returns the output
-func Parse(input []byte) ([]byte, error) {
+func parse(input []byte) ([]byte, error) {
 	tpl, err := pongo2.FromString(string(input))
 	if err != nil {
 		return nil, err
